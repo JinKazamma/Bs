@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
+
+PROJECT(bs)
+
+ADD_EXECUTABLE(bs SRC/MAIN.CPP)
