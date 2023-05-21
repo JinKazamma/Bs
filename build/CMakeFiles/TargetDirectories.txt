@@ -4,3 +4,4 @@ D:/bs/build/CMakeFiles/ZERO_CHECK.dir
 D:/bs/build/external/glfw/CMakeFiles/ALL_BUILD.dir
 D:/bs/build/external/glfw/src/CMakeFiles/glfw.dir
 D:/bs/build/external/glfw/src/CMakeFiles/update_mappings.dir
+D:/bs/build/external/glad/CMakeFiles/glad.dir
