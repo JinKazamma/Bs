@@ -3,24 +3,18 @@
 #include <iostream>
 #include "render/ShaderProgram.h"
 #include "resurses/resurceManager.h"
-GLfloat point[] = {
-    0.0f,  0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-   -0.5f, -0.5f, 0.0f
-};
-GLfloat colors[] = {
-    1.0f, 0.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 1.0f
-};
+#include "render/Texture2D.h"
+#include "glm/vec2.hpp"
+#include "glm/mat4x4.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "render/sprite.h"
+
+glm::ivec2 g_windowSize(640, 480);
 
 
 
 int main(int argc, char** argv )
 {
-  
-    GLFWwindow* pWindow;
-
     if (!glfwInit())
     {
         return -1;
@@ -28,62 +22,48 @@ int main(int argc, char** argv )
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    pWindow = glfwCreateWindow(640, 480, "Batlle city", NULL, NULL);
+    GLFWwindow* pWindow = glfwCreateWindow(g_windowSize.x, g_windowSize.y, "ugolki", NULL, NULL);
     if (!pWindow)
     {
         glfwTerminate();
         return -1;
     }
     glfwMakeContextCurrent(pWindow);
-
     if (!gladLoadGL())
     {
         std::cout << "cant init glad" << std::endl;
         return -1;
     }
     std::cout << "OpenGL " << GLVersion.major << "." << GLVersion.minor << std::endl;
-
     glClearColor(1, 1, 0, 1);
 
    
     {
-        ReurceManager reurceManager(argv[0]);
-        auto pDefoultShaderProgram = reurceManager.loadShaderProgram("DefoultShader", "res/Shader/vertex.txt", "res/Shader/fragment.txt");
-        if (!pDefoultShaderProgram)
+        ResurceManager reurceManager(argv[0]);
+      
+        auto pSpriteShaderProgram = reurceManager.loadShaderProgram("SpriteShaderBoard", "res/Shader/vSprite.txt", "res/Shader/fSprite.txt");
+        if (!pSpriteShaderProgram)
         {
-            std::cerr << "cant create shader progrram " << "DefoultShader" << std::endl;
+            std::cerr << "cant create shader progrram " << "DefoultSprite" << std::endl;
             return -1;
         }
+        auto texBoard = reurceManager.loadTexture("BoardSTexture", "res/textures/Board.png");
+        auto BoardSprite = reurceManager.loadSprite("NewSprite", "BoardSTexture", "SpriteShaderBoard", 640, 500);
+        BoardSprite->setPosition(glm::vec2(5,-30));
+        glm::mat4 projectMatrix = glm::ortho(0.f, static_cast<float>(g_windowSize.x), 0.f, static_cast<float>(g_windowSize.y), -100.f, 100.f);
+        pSpriteShaderProgram->use();
+        pSpriteShaderProgram->setInt("texBoard", 0);
+        pSpriteShaderProgram->setmatrix4("projectionMat", projectMatrix);
 
-        GLuint points_vbo = 0;
-        glGenBuffers(1, &points_vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
 
-        GLuint colors_vbo = 0;
-        glGenBuffers(1, &colors_vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
-        GLuint vao = 0;
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
 
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-        glEnableVertexAttribArray(1);
-        glBindBuffer(GL_ARRAY_BUFFER, colors_vbo);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         while (!glfwWindowShouldClose(pWindow))
         {
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            pDefoultShaderProgram->use();
-            glBindVertexArray(vao);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+           //glClear(GL_COLOR_BUFFER_BIT);
+            BoardSprite->render();
 
             glfwSwapBuffers(pWindow);
 

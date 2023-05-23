@@ -7,6 +7,12 @@
     <ClCompile Include="D:\bs\src\render\ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\bs\src\render\Texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\bs\src\render\sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\bs\src\resurses\resurceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -15,7 +21,16 @@
     <ClInclude Include="D:\bs\src\render\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="D:\bs\src\render\Texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\bs\src\render\sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="D:\bs\src\resurses\resurceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\bs\src\resurses\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
